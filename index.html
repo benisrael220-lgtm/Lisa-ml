@@ -12,7 +12,7 @@
       color: white;
       text-align: center;
       overflow-x: hidden;
-      min-height: 200vh; /* Ensures there is room to scroll */
+      min-height: 600vh; 
     }
 
     .section {
@@ -29,19 +29,22 @@
 
     .card {
       background: rgba(0,0,0,0.3);
-      padding: 30px;
-      border-radius: 20px;
+      padding: 35px;
+      border-radius: 25px;
       max-width: 600px;
       margin: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      min-height: 50px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .typing {
       border-right: 3px solid white;
       display: inline-block;
       animation: blink 0.7s infinite;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: left;
     }
 
     @keyframes blink {
@@ -50,46 +53,46 @@
     }
 
     button {
-      margin-top: 20px;
-      padding: 15px 25px;
-      font-size: 1.1rem;
+      margin: 10px;
+      padding: 12px 25px;
+      font-size: 1rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 50px;
       cursor: pointer;
       transition: 0.3s;
+      font-weight: 600;
     }
+
+    .choice-btn { background: white; color: #ff758c; }
+    .choice-btn:hover { background: #ffe0e6; transform: scale(1.05); }
 
     .yes { background-color: #4CAF50; color: white; }
     .no { background-color: #f44336; color: white; position: absolute; }
 
-    .quiz button { display: block; margin: 10px auto; }
-
     .start-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000000dd;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-      flex-direction: column;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000000f2; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; z-index: 999;
     }
 
-    .start-screen button {
-      background: #ff7eb3;
-      color: white;
-      font-size: 1.2rem;
+    .start-screen button { background: #ff7eb3; color: white; padding: 20px 50px; font-size: 1.4rem; border-radius: 50px; }
+
+    .hint-text { font-size: 0.85rem; opacity: 0.7; margin-top: 20px; font-style: italic; }
+    
+    .final-heart { font-size: 50px; cursor: pointer; animation: heartbeat 1.5s infinite; }
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
 <body>
 
   <div class="start-screen" id="startScreen">
-    <h2>For Lisa ❤️</h2>
-    <button onclick="startExperience()">Start Our Story</button>
+    <h1>Hey Lisa... ❤️</h1>
+    <p>Israel made something for you.</p>
+    <button onclick="startExperience()">Enter</button>
   </div>
 
   <audio id="bgMusic" loop>
@@ -97,44 +100,72 @@
   </audio>
 
   <div class="section">
-    <h1>Our Story ❤️</h1>
+    <h1>The Long Shot</h1>
     <div class="card">
-      <p class="typing" data-text="📩 The day I took a risk and texted you on TikTok..."></p>
+      <p class="typing" data-text="📩 I didn’t plan on meeting someone like you the way I did… sliding into your TikTok DMs felt like a long shot, and I honestly didn’t even know if you’d reply."></p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card" id="q1">
+      <h3>Quick Quiz! 🧐</h3>
+      <p>Did you think I was going to be this charming when we first started talking?</p>
+      <button class="choice-btn" onclick="answerQ('q1', 'Haha, fair enough! But that small moment turned into something that now means a lot to me.')">I had my doubts... 🤔</button>
+      <button class="choice-btn" onclick="answerQ('q1', 'I knew it all along! 😉 That small moment turned into something that now means a lot to me.')">I saw the potential! ✨</button>
     </div>
   </div>
 
   <div class="section">
     <div class="card">
-      <p class="typing" data-text="✨ The moment you replied... and everything changed a little"></p>
+      <p class="typing" data-text="✨ I’ll be real with you. When we started talking, I wasn’t even sure I was ready for anything serious. I had just come out of something that left me a bit unsure of myself and my feelings."></p>
     </div>
   </div>
 
   <div class="section">
     <div class="card">
-      <p class="typing" data-text="💭 The moment I realized... I actually like you"></p>
+      <p class="typing" data-text="🌿 But getting to know you has been different—easy, genuine, and something I didn’t expect. You’re kind, you’re strong, and yeah… a little strict too 😂 (honestly, more than my mom)."></p>
     </div>
   </div>
 
   <div class="section">
-    <h2>Before we continue... 😌</h2>
-    <div class="card quiz" id="quiz">
-      <p>How well do you know me?</p>
-      <button onclick="correctAnswer()">I like you</button>
-      <button onclick="wrongAnswer()">I don't like you</button>
+    <div class="card" id="q2">
+      <h3>About that 'strict' part... 👮‍♀️</h3>
+      <p>Rate my survival chances after calling you strict:</p>
+      <button class="choice-btn" onclick="answerQ('q2', 'Whew! I appreciate the mercy. Seriously though, I admire how you carry yourself.')">10% - You're in trouble! 😠</button>
+      <button class="choice-btn" onclick="answerQ('q2', '100% - Because I know I am! 😂 I admire how you carry yourself and I respect it.')">100% - You're safe! 😇</button>
     </div>
   </div>
 
-  <div class="section" id="proposal" style="display:none;">
+  <div class="section">
     <div class="card">
-      <h2>Will you be my girlfriend? 💕</h2>
-      <button class="yes" onclick="sayYes()">Yes ❤️</button>
-      <button class="no" id="noBtn">No 😢</button>
+      <p class="typing" data-text="💪 I find myself liking you more every day. I’m not perfect, and I won’t pretend to be. But what I can promise is that I’ll try—try to be better, try to grow, and try to be someone who deserves you."></p>
+    </div>
+  </div>
+
+  <div class="section" id="proposalSection">
+    <div class="card">
+      <h2>One last thing...</h2>
+      <p>So I want to ask you something simple, but important to me…</p>
+      <h1 style="color: #ffe0e6; font-size: 2.5rem;">Will you be my girlfriend?</h1>
+      
+      <div style="margin-top: 30px;">
+        <button class="yes" onclick="sayYes()">Yes ❤️</button>
+        <button class="no" id="noBtn">Ask me later ☺️</button>
+      </div>
+
+      <p class="hint-text">No pressure, Lisa. I'm just happy to have you in my life. Take all the time you need. 😊</p>
+    </div>
+  </div>
+
+  <div class="section" id="extraSweet" style="display:none;">
+    <div class="card">
+      <div class="final-heart" onclick="revealFinal()">❤️</div>
+      <p id="finalMsg" style="margin-top: 20px; font-weight: bold; font-size: 1.5rem;"></p>
     </div>
   </div>
 
   <script>
-    // Intersection Observer to detect when text comes into view
-    const observerOptions = { threshold: 0.5 };
+    const observerOptions = { threshold: 0.3 };
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -160,9 +191,9 @@
         if (wordIndex < words.length) {
           element.innerHTML += words[wordIndex] + ' ';
           wordIndex++;
-          setTimeout(typeWord, 150); 
+          setTimeout(typeWord, 100); 
         } else {
-          element.style.borderRight = "none"; // Hide cursor when done
+          element.style.borderRight = "none";
         }
       }
       typeWord();
@@ -171,32 +202,34 @@
     function startExperience() {
       document.getElementById('startScreen').style.display = 'none';
       const music = document.getElementById('bgMusic');
-      music.play().catch(e => console.log("Audio needs user interaction"));
+      music.play().catch(e => console.log("Audio waiting..."));
       window.scrollTo(0,0);
     }
 
-    function correctAnswer() {
-      document.getElementById('quiz').innerHTML = "<p>Okay okay... you got that right 😄</p>";
-      setTimeout(() => {
-        const prop = document.getElementById('proposal');
-        prop.style.display = 'block';
-        prop.classList.add('visible');
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-      }, 1000);
-    }
-
-    function wrongAnswer() {
-      alert("Hmm... try again 😅");
+    function answerQ(id, text) {
+      document.getElementById(id).innerHTML = `<p style="font-style: italic; font-size: 1.1rem;">"${text}"</p>`;
     }
 
     function sayYes() {
-      document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh;'><h1>You just made me the happiest person ❤️</h1></div>";
+      document.getElementById('proposalSection').innerHTML = `
+        <div class="card">
+          <h1>You just made my entire world! ❤️</h1>
+          <p>I promise to be the man you deserve.</p>
+          <div class="final-heart" onclick="revealFinal()">❤️</div>
+          <p id="finalMsg" style="margin-top: 20px; font-weight: bold; font-size: 1.5rem;"></p>
+        </div>`;
+    }
+
+    function revealFinal() {
+      const msg = document.getElementById('finalMsg');
+      msg.innerText = "Israel loves you so much. ✨";
     }
 
     const noBtn = document.getElementById('noBtn');
     noBtn.addEventListener('mouseover', () => {
-      const x = Math.random() * (window.innerWidth - 100);
+      const x = Math.random() * (window.innerWidth - 150);
       const y = Math.random() * (window.innerHeight - 50);
+      noBtn.style.position = 'fixed';
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
     });
