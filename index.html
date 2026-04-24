@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Lisa ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+    }.section {
+  padding: 60px 20px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  background: rgba(0,0,0,0.3);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.typing {
+  border-right: 3px solid white;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { border-color: white; }
+  25%, 75% { border-color: transparent; }
+}
+
+button {
+  margin-top: 20px;
+  padding: 15px 25px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.yes { background-color: #4CAF50; }
+.no { background-color: #f44336; position: absolute; }
+
+.quiz button { display: block; margin: 10px auto; }
+
+.start-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000dd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  flex-direction: column;
+}
+
+.start-screen button {
+  background: #ff7eb3;
+  color: white;
+  font-size: 1.2rem;
+}
+
+  </style>
+</head>
+<body>  <!-- Start Screen to Enable Music -->  <div class="start-screen" id="startScreen">
+    <h2>Tap to begin ❤️</h2>
+    <button onclick="startExperience()">Start</button>
+  </div>  <!-- Audio -->  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>  <!-- Timeline -->  <div class="section">
+    <h1>Our Story ❤️</h1>
+    <div class="card">
+      <p class="typing" data-text="📩 The day I took a risk and texted you on TikTok..."></p>
+    </div>
+  </div>  <div class="section">
+    <div class="card">
+      <p class="typing" data-text="✨ The moment you replied... and everything changed a little"></p>
+    </div>
+  </div>  <div class="section">
+    <div class="card">
+      <p class="typing" data-text="💭 The moment I realized... I actually like you"></p>
+    </div>
+  </div>  <!-- Quiz -->  <div class="section">
+    <h2>Before we continue... 😌</h2>
+    <div class="card quiz" id="quiz">
+      <p>How well do you know me?</p>
+      <button onclick="correctAnswer()">I like you</button>
+      <button onclick="wrongAnswer()">I don't like you</button>
+    </div>
+  </div>  <!-- Proposal -->  <div class="section" id="proposal" style="display:none;">
+    <div class="card">
+      <h2>Will you be my girlfriend? 💕</h2>
+      <button class="yes" onclick="sayYes()">Yes ❤️</button>
+      <button class="no" id="noBtn">No 😢</button>
+    </div>
+  </div>  <script>
+    const sections = document.querySelectorAll('.section');
+    window.addEventListener('scroll', () => {
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+          sec.classList.add('visible');
+        }
+      });
+    });
+
+    function typeText(element) {
+      const rawText = element.getAttribute('data-text');
+      const words = rawText.split(' ');
+      let wordIndex = 0;
+
+      function typeWord() {
+        if (wordIndex < words.length) {
+          const word = words[wordIndex];
+          let delay = 40;
+
+          if (word.toLowerCase().includes("risk") ||
+              word.toLowerCase().includes("replied") ||
+              word.toLowerCase().includes("realized") ||
+              word.toLowerCase().includes("like")) {
+            delay = 200;
+          }
+
+          element.innerHTML += word + ' ';
+          wordIndex++;
+          setTimeout(typeWord, delay);
+        }
+      }
+
+      typeWord();
+    }
+
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.typing').forEach(el => typeText(el));
+    });
+
+    function correctAnswer() {
+      document.getElementById('quiz').innerHTML = "<p>Okay okay... you got that right 😄</p>";
+      setTimeout(() => {
+        document.getElementById('proposal').style.display = 'block';
+      }, 1500);
+    }
+
+    function wrongAnswer() {
+      alert("Hmm... try again 😅");
+    }
+
+    function sayYes() {
+      document.body.innerHTML = "<h1 style='margin-top:40vh;'>You just made me the happiest person ❤️</h1>";
+    }
+
+    const noBtn = document.getElementById('noBtn');
+    noBtn.addEventListener('mouseover', () => {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    });
+
+    // Fade-in music
+    function startExperience() {
+      const screen = document.getElementById('startScreen');
+      screen.style.display = 'none';
+
+      const music = document.getElementById('bgMusic');
+      music.volume = 0;
+      music.play();
+
+      let vol = 0;
+      const fade = setInterval(() => {
+        if (vol < 1) {
+          vol += 0.02;
+          music.volume = vol;
+        } else {
+          clearInterval(fade);
+        }
+      }, 200);
+    }
+  </script></body>
+</html>
